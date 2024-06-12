@@ -7,8 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PageController {
 	
 	@GetMapping("/")
-	public String home() {
+	public String test() {
 		return "Test";
+	}
+	
+	@GetMapping("/home")
+	public String home() {
+		return "index";
+	}
+	
+	@GetMapping("/create")
+	public String search() {
+		return "create";
 	}
 
 }
