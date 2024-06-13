@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.myProduct.Model.LikeList;
 import com.myProduct.Model.LikeListDTO;
+import com.myProduct.Model.LikeListRepository;
 import com.myProduct.Model.Product;
 import com.myProduct.Model.Userinfo;
 import com.myProduct.Service.LikeListService;
@@ -33,6 +34,9 @@ public class Controller {
 	
 	@Autowired
 	private LikeListService likeService;
+	
+	@Autowired
+	private LikeListRepository likeRepo;
 	
 	@GetMapping("/userinfo/{userid}")
 	private Userinfo testShowUser(@PathVariable("userid")Integer userid) {
@@ -80,6 +84,26 @@ public class Controller {
 		likeService.deleteLikeListById(listid);
 		System.out.println("delete successfully!");
 	}
+	
+	//查詢單筆喜好商品
+	@GetMapping("/getOneList/{listid}")
+	private LikeList findOneListById(@PathVariable("listid") Integer listid) {
+		LikeList oneList = likeService.findOneListById(listid);
+		return oneList;
+	}
+	
+	//更改喜好的金融商品(未完成)
+	@PostMapping("/updateLikeList")
+    private String updateLikeList(@RequestBody LikeList likelist) {
+
+		likeService.updateLikeList(likelist.getProduct().getProductName(), 
+				likelist.getProduct().getPrice(),likelist.getProduct().getFeeRate(),
+				likelist.getUserAccount().getAccount(), 
+				likelist.getOrderQuantity(),likelist.getListid());
+		
+	    System.out.println("Received form data: " + likelist.getListid());
+	    return "Form submitted successfully";
+    }
 	
 
 }

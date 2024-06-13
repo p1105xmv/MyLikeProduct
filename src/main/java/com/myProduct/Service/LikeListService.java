@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.myProduct.Model.LikeList;
+import com.myProduct.Model.LikeListDTO;
 import com.myProduct.Model.LikeListRepository;
 import com.myProduct.Model.Product;
 import com.myProduct.Model.ProductRepository;
@@ -49,6 +50,30 @@ public class LikeListService {
 	public void deleteLikeListById(Integer listid) {
 		likeRepo.deleteById(listid);
 	}
+	
+	public LikeList findOneListById(Integer listid) {
+		LikeList onelist = likeRepo.findByListid(listid);
+		return onelist;
+	}
+	
+	public void updateLikeList(String productName, Integer price, double feeRate,
+			String account, Integer orderQuantity, Integer listid) {
+		LikeList list = likeRepo.findByListid(listid);
+		if(list!=null) {
+			Product product = productRepo.findByProductName(productName);
+			double totalFee = (product.getPrice())*orderQuantity*(product.getFeeRate());
+			Integer totalAmount = (int) ((product.getPrice())*orderQuantity+totalFee);
+			UserAccount userAcc = AccRepo.findByAccount(account);
+			list.setOrderQuantity(orderQuantity);
+			list.setProduct(product);
+			list.setTotalFee(totalFee);
+			list.setTotalAmount(totalAmount);
+			list.setUserAccount(userAcc);
+			
+			likeRepo.save(list);
+		}
+	}
+
 }
 
 
