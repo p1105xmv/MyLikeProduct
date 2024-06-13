@@ -1,5 +1,7 @@
 package com.myProduct.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +40,14 @@ public class LikeListService {
 
 	    likeRepo.save(newList);
 		}
+	
+	public List<LikeList> findLikeListByUsername(String username){
+		List<LikeList> list = likeRepo.findLikeListByUsername(username);
+		return list;
 	}
+}
+
+
 	
 	
 

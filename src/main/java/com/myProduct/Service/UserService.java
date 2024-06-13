@@ -20,12 +20,16 @@ public class UserService {
 	}
 	
 	public void saveUserinfo(String username,String email) {
+		//確認是否已經有個人資料(以姓名查詢)
 		Userinfo user = userRepo.findByUserName(username);
 		if(user==null) {
 			Userinfo newUser = new Userinfo();
 		    newUser.setUserName(username);;
 		    newUser.setEmail(email);
 		    userRepo.save(newUser);
+		}else {
+			user.setEmail(email);
+			userRepo.save(user);
 		}
 	}
 	

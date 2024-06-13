@@ -1,5 +1,7 @@
 package com.myProduct.Controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.myProduct.Model.LikeList;
 import com.myProduct.Model.LikeListDTO;
 import com.myProduct.Model.Product;
 import com.myProduct.Model.Userinfo;
@@ -55,5 +58,12 @@ public class Controller {
 	    System.out.println("Received form data: " + DTO);
 	    return "Form submitted successfully";
     }
+	
+	//查詢喜好商品清單
+	@GetMapping("/likelist/{username}")
+	private List<LikeList> findMyLikeList(@PathVariable("username")String username) {
+		List<LikeList> list = likeService.findLikeListByUsername(username);
+		return list;
+	}
 
 }

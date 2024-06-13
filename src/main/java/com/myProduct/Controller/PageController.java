@@ -17,8 +17,13 @@ public class PageController {
 	}
 	
 	@GetMapping("/create")
-	public String search() {
+	public String insertData() {
 		return "create";
+	}
+	
+	@GetMapping("/read")
+	public String search() {
+		return "read";
 	}
 
 }
