@@ -13,6 +13,7 @@ public interface LikeListRepository extends JpaRepository<LikeList, Integer> {
 			+ " Left join Userinfo U on UA.userid = U.userid where U.username = :username", nativeQuery = true)
 	List<LikeList> findLikeListByUsername(String username);
 
+
 }
 
 

@@ -30,6 +30,10 @@ public class ProductService {
 		    productRepo.save(newProduct);	
 	}
 	
+	public Product findProductById(Integer productid) {
+		return productRepo.findByProductid(productid);
+	}
+	
 	
 
 }

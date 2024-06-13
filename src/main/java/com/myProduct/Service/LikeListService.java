@@ -45,6 +45,10 @@ public class LikeListService {
 		List<LikeList> list = likeRepo.findLikeListByUsername(username);
 		return list;
 	}
+	
+	public void deleteLikeListById(Integer listid) {
+		likeRepo.deleteById(listid);
+	}
 }
 
 

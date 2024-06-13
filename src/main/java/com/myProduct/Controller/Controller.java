@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myProduct.Model.LikeList;
@@ -41,7 +42,7 @@ public class Controller {
 	
 	//新增喜好的金融商品
 	@PostMapping("/submitForm")
-    public String submitForm(@RequestBody LikeListDTO DTO) {
+    private String submitForm(@RequestBody LikeListDTO DTO) {
 		uService.saveUserinfo(DTO.getUserName(), DTO.getEmail());
 		
 		Userinfo user = uService.findUserByName(DTO.getUserName());
@@ -65,5 +66,20 @@ public class Controller {
 		List<LikeList> list = likeService.findLikeListByUsername(username);
 		return list;
 	}
+	
+	//查詢產品資訊
+	@GetMapping("/getProductInfo/{productId}")
+	private Product findProductByName(@PathVariable("productId") Integer productId) {
+		Product product = productService.findProductById(productId);
+		return product;
+	}
+	
+	//刪除喜好商品
+	@GetMapping("/deleteLikeList/{listid}")
+	private void deleteLikeList(@PathVariable("listid") Integer listid) {
+		likeService.deleteLikeListById(listid);
+		System.out.println("delete successfully!");
+	}
+	
 
 }

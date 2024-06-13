@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Introduction</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.14/vue.esm-browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.min.js" integrity="sha512-gEM2INjX66kRUIwrPiTBzAA6d48haC9kqrWZWjzrtnpCtBNxOXqXVFEeRDOeVC13pw4EOBrvlsJnNr2MXiQGvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    table {
+      border-collapse: collapse;
+      width: 90%;
+      margin: 20px auto;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+  </style>
+</head>
+<body>
+
+<div id="app" th:data-product-id="${productid}">
+<table>
+  <tr>
+    <th>產品名稱</th>
+    <td>{{product.productName}}</td>
+  </tr>
+  <tr>
+    <th>產品價格</th>
+    <td>{{product.price}}</td>
+  </tr>
+  <tr>
+    <th>手續費率</th>
+    <td>{{product.feeRate * 100}}%</td>
+  </tr>
+</table>
+</div>
+
+<script>
+     Vue.createApp({
+    data() {
+      return { 
+      	product:'',
+      	productId: document.getElementById('app').getAttribute('data-product-id'),
+      }
+    },
+    methods: {	
+	getData(){
+		axios.get(`/getProductInfo/${this.productId}`)
+             .then(response => {
+             this.product = response.data;
+             console.log(this.product);
+             console.log('12334');
+          })
+             .catch(error => {
+             console.error('Error fetching product info', error);
+        }  );
+	}
+       
+    },
+    created() {
+		console.log('Product ID:', this.productId);
+		this.getData();
+	},
+  }).mount("#app");
+
+ 
+    </script>
+
+</body>
+</html>

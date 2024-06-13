@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-tw">
+<html lang="zh-tw"  xmlns:th="http://www.thymeleaf.org/">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新增頁面</title>
+    <title>查詢頁面</title>
+    <link th:href="@{/bootstrap.min.css}" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.14/vue.esm-browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.4.21/vue.global.min.js" integrity="sha512-gEM2INjX66kRUIwrPiTBzAA6d48haC9kqrWZWjzrtnpCtBNxOXqXVFEeRDOeVC13pw4EOBrvlsJnNr2MXiQGvg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -147,6 +149,12 @@
 	.result-table th {
 	  background-color: #f2f2f2;
 	}
+	
+	.link-style {
+       color: blue;
+       text-decoration: underline;
+       cursor: pointer;
+    }
 
     </style>
 </head>
@@ -163,7 +171,7 @@
                 <ul class="menu">
                     <li><a href="/create">新增</a></li>
                     <li><a href="/read">查詢</a></li>
-                    <li><a href="homework_3.html">刪除</a></li>
+                    <li><a href="/delete">刪除</a></li>
                     <li><a href="homework_4.html">修改</a></li>
                     <li><a href="/home">回首頁</a></li>
                 </ul>
@@ -191,7 +199,7 @@
       <tbody>
         <tr v-for="item in likeList" :key="item.id">
           <td>{{ item.listid }}</td>
-          <td>{{ item.product.productName }}</td>
+          <td><a :href=`/productInfo/${item.product.productid}`>{{ item.product.productName }}</a></td>
           <td>{{ item.userAccount.account }}</td>
           <td>{{ item.totalFee }}</td>
           <td>{{ item.totalAmount }}</td>
@@ -201,10 +209,9 @@
     </table>
     <p v-else>暫無搜尋結果</p>
   </div>
-    
+
     </div>
     </div>
-        
         
     </div>
    <script>
@@ -212,7 +219,12 @@
     data() {
       return { 
 		username: '',
-      	likeList: []
+      	likeList: [],
+      	selectedProduct: {
+          productName: '',
+          price: 0,
+          feeRate: 0
+        },
       }
     },
     methods: {
@@ -225,12 +237,23 @@
           console.error("There was an error!", error);
         });
       },
+      showModal(item) {
+          this.selectedProduct = item.product;
+          $(this.$refs.productModal).modal('show');
+      },
       
     },
     created() {
       
     }
   }).mount("#app");
+  
+     function openPopup(productId) {
+		const url = `productInfo.html?productId=${productId}`;
+      window.open(url, 'popupWindow', 'width=600,height=400,scrollbars=yes');
+      console.log('12345');
+      console.log(productId);
+    }
  
     </script>
 </body>

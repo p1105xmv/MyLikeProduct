@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>查詢頁面</title>
+    <title>刪除頁面</title>
     <link th:href="@{/bootstrap.min.css}" rel="stylesheet" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>   
@@ -178,7 +178,7 @@
             </nav>
         </header>
       <div class="container">
-        <h2>查詢喜好金融商品</h2>
+        <h2>刪除的喜好金融商品</h2>
     <div id="app">
 	  <div id="formData">
     <div class="search-box">
@@ -193,7 +193,7 @@
           <th>扣款帳號</th>
           <th>總手續費用</th>
           <th>扣款總金額</th>
-          <th>Email</th>
+          <th>刪除商品</th>
         </tr>
       </thead>
       <tbody>
@@ -203,7 +203,11 @@
           <td>{{ item.userAccount.account }}</td>
           <td>{{ item.totalFee }}</td>
           <td>{{ item.totalAmount }}</td>
-          <td>{{ item.userAccount.userinfo.email }}</td>
+          <td>
+		    <a @click="deleteLike(item.listid)">
+		        <button type="button" class="btn btn-danger">刪除</button>
+		    </a>
+		</td>
         </tr>
       </tbody>
     </table>
@@ -237,23 +241,22 @@
           console.error("There was an error!", error);
         });
       },
-      showModal(item) {
-          this.selectedProduct = item.product;
-          $(this.$refs.productModal).modal('show');
-      },
-      
+      deleteLike(listId) {
+            axios.get(`/deleteLikeList/${listId}`)
+                .then(response => {
+                    console.log('刪除成功');
+                    this.likeList = this.likeList.filter(item => item.listid !== listId);
+                })
+                .catch(error => {
+                    console.error('刪除失敗', error);
+                });
+      }
     },
     created() {
       
     }
   }).mount("#app");
-  
-     function openPopup(productId) {
-		const url = `productInfo.html?productId=${productId}`;
-      window.open(url, 'popupWindow', 'width=600,height=400,scrollbars=yes');
-      console.log('12345');
-      console.log(productId);
-    }
+
  
     </script>
 </body>
